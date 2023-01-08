@@ -1,0 +1,39 @@
+let convertEntries = () => {
+    "use strict";
+    let target = [...document.getElementsByClassName("entry")];
+    let result = [];
+    target.forEach((element) => {
+      let regExpLiteral = /Published:.(.*)/i;
+      result.push({
+        title: element.querySelector(".EntryTitle").innerText,
+        url: element.querySelector("a:not(.entry__source)").href,
+        summary: element.querySelector(".EntrySummary").innerText,
+        // time: regExpLiteral.exec("Published: 2022.07.07")[1],//sample data input
+        time: regExpLiteral.exec(element.querySelector("span.ago").title)[1],
+        // time: element.querySelector("span.ago").title,
+        // time: regExpLiteral,
+        sourceTitle: element.querySelector(".entry__source").innerText,
+        sourceUrl: element.querySelector(".entry__source").href,
+      });
+    });
+    console.log("result===>>>>",result)
+    return result;
+  };
+  
+  let saveToFile = (input) => {console.log.apply("input=>>>>>",input)
+    "use strict";
+    let json = JSON.stringify(input, undefined, 2);
+    let blob = new Blob([json], { type: "text/plain;charset=utf-8" });
+    let downloadLink = document.createElement("a");
+    downloadLink.href = URL.createObjectURL(blob);
+    let fileName = "FeedlySavedForLater" + Date.now().toString() + ".json";
+    downloadLink.download = fileName;
+    downloadLink.click();
+    URL.revokeObjectURL(blob);
+  };
+  
+
+
+
+
+  
